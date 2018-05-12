@@ -16,6 +16,12 @@ class User(db.Model):
     password= db.Column(db.String(80))
     admin = db.Column(db.Boolean)
 
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(50))
+    complete = db.Column(db.Boolean)
+    user_id = db.Column(db.Integer)
+
 @app.route('/api/v1/user', methods=['GET'])
 def get_all_users():
 
