@@ -45,7 +45,13 @@ def get_one_user(public_id):
 @app.route('/api/v1/user', methods=['POST'])
 def create_user():
 
-	return jsonify({'message': ''})
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+    new_user = User(public_id=str(uuid.uuid4)), name=data['name'], password=hashed_password, admin=False)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User: {user}, has been created'.format(user=data['name'])})
 
 @app.route('/api/v1/user/<public_id>', methods=['PUT'])
 def promote_user(public_id):
