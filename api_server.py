@@ -61,7 +61,14 @@ def promote_user(public_id):
 @app.route('/api/v1/user/<public_id>', methods=['DELETE'])
 def delete_user(public_id):
 
-	return jsonify({'message': ''})
+    user = User.query.filter_by(public_id=public_id).first()
+    if not user:
+        return jsonify({'message': 'User not found'})
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'the user: {user} has been deleted'.format(user=user.name)})
 
 
 if __name__ == '__main__':
