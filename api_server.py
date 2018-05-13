@@ -55,8 +55,11 @@ def create_user():
 
 @app.route('/api/v1/user/<public_id>', methods=['PUT'])
 def promote_user(public_id):
+    user = User.query.filter_by(public_id=public_id).first()
+    user.admin = True
+    db.session.commit()
 
-	return jsonify({'message': ''})
+    return jsonify({'message': 'user {user} has been promoted'.format(user=user.name)})
 
 @app.route('/api/v1/user/<public_id>', methods=['DELETE'])
 def delete_user(public_id):
